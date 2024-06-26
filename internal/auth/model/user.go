@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -17,6 +16,12 @@ type User struct {
 	RefreshToken string    `json:"refresh"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
+}
+
+type UserResponse struct {
+	Status  int                    `json:"status"`
+	Message string                 `json:"message"`
+	Data    map[string]interface{} `json:"data"`
 }
 
 func HashPassword(password string) string {
