@@ -7,9 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+	db.ConnectDb()
+}
+
 func main() {
 	router := gin.New()
-	db.ConnectDb()
 	router.Use(gin.Logger())
 	routes.UserRoutes(router)
 	routes.PaymentRoutes(router)

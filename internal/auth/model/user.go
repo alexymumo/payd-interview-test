@@ -11,9 +11,9 @@ type User struct {
 	UserId    uint32    `gorm:"primary_key;auto_increment" json:"userid"`
 	Email     string    `gorm:"size:255;not null;unique" json:"email"`
 	Name      string    `gorm:"size:255;not null;unique" json:"name"`
-	Password  string    `json:"password"`
-	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
-	UpdatedAt time.Time `json:"updated_at" gorm:"autoCreateTime"`
+	Password  string    `gorm:"not null" json:"password"`
+	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 type UserResponse struct {
