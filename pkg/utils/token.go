@@ -13,7 +13,7 @@ var SECRET_KEY = os.Getenv("")
 type UserCredential struct {
 	Username string `json:"username"`
 	Email    string `json:"password"`
-	UserId   int `json:"userid"`
+	UserId   int    `json:"userid"`
 	jwt.StandardClaims
 }
 

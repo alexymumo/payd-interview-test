@@ -1,30 +1,29 @@
 package db
 
 import (
-	"database/sql"
 	"fmt"
+	"payd/internal/auth/model"
 
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-const (
-	host     = "localhost"
-	port     = 5400
-	user     = "postgres"
-	password = ""
-	dbname   = ""
-)
+var db *gorm.DB
 
 func ConnectDb() {
-	connectStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	db, err := sql.Open("postgres", connectStr)
+	var err error
+	//host := os.Getenv("POSTGRES_HOST")
+	//user := os.Getenv("POSTGRES_USER")
+	//password := os.Getenv("POSTGRES_PASSWORD")
+	//dbname := os.Getenv("POSTGRES_DB")
+	//port := os.Getenv("POSTRES_PORT")
+
+	dsn := "host=127.0.0.1 user=postgres password=1234 dbname=paydtest port=5432 sslmode=disable"
+	//dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", host, user, password, dbname, port)
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		panic("Failed to connect to database")
 	}
-	defer db.Close()
-	if err = db.Ping(); err != nil {
-		panic(err)
-	}
-	fmt.Println("connected successfully")
+	fmt.Println("Connected successfully")
+	db.AutoMigrate(&model.User{})
 }

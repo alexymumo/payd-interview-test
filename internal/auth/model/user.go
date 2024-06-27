@@ -8,14 +8,12 @@ import (
 )
 
 type User struct {
-	UserId       int       `json:"userid"`
-	Email        string    `json:"email"`
-	Name         string    `json:"name"`
-	Password     string    `json:"password"`
-	Token        string    `json:"token"`
-	RefreshToken string    `json:"refresh"`
-	CreatedAt    time.Time `json:"createdAt"`
-	UpdatedAt    time.Time `json:"updatedAt"`
+	UserId    uint32    `gorm:"primary_key;auto_increment" json:"userid"`
+	Email     string    `gorm:"size:255;not null;unique" json:"email"`
+	Name      string    `gorm:"size:255;not null;unique" json:"name"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt time.Time `json:"updated_at" gorm:"autoCreateTime"`
 }
 
 type UserResponse struct {
