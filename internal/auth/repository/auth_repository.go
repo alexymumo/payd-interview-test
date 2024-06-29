@@ -31,19 +31,11 @@ func RegisterUser() gin.HandlerFunc {
 		}
 
 		password := model.HashPassword(userInput.Password)
-		//userInput.Password = password
-
 		createUser := model.User{
 			Email:    userInput.Email,
 			Name:     userInput.Name,
 			Password: string(password),
 		}
-		/*
-			user := model.User{
-				Email:    userInput.Email,
-				Name:     userInput.Name,
-				Password: string(password),
-			}*/
 		db.DB.Create(&createUser)
 		c.JSON(http.StatusOK, gin.H{"user": createUser})
 	}
