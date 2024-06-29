@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -66,6 +67,10 @@ func VerifyToken(signedToken string) (claims *UserCredential, msg string) {
 	return claims, msg
 }
 
-func UpdateToken() {
-
+func GetUserId(ctx *gin.Context) uint32 {
+	userID, exists := ctx.Get("userid")
+	if !exists {
+		return 0
+	}
+	return userID.(uint32)
 }
