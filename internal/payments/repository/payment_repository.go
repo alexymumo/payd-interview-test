@@ -3,7 +3,6 @@ package repo
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"payd/internal/payments/model"
 	"payd/pkg/db"
@@ -20,12 +19,22 @@ func MakePayment() gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalide"})
 			return
 		}
-		paymentRequest, err := json.Marshal(payment)
+
+		paymentRequest := model.Payment{
+			AccountId:   payment.AccountId,
+			PhoneNumber: payment.PhoneNumber,
+			Amount:      payment.Amount,
+			Narration:   payment.Narration,
+			CallbackURL: payment.CallbackURL,
+			Channel:     payment.Channel,
+		}
+		db.DB.Create(&paymentRequest)
+		requestBody, err := json.Marshal(payment)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred"})
 			return
 		}
-		if err := utils.PublishMessage(paymentRequest); err != nil {
+		if err := utils.PublishMessage(requestBody); err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to publish message"})
 			return
 		}
@@ -33,7 +42,7 @@ func MakePayment() gin.HandlerFunc {
 
 		paydUrl := "https://api.mypayd.app/api/v2/withdrawal"
 		client := &http.Client{}
-		req, err := http.NewRequest("POST", paydUrl, bytes.NewBuffer(paymentRequest))
+		req, err := http.NewRequest("POST", paydUrl, bytes.NewBuffer(requestBody))
 		if err != nil {
 			panic(err)
 		}
@@ -44,7 +53,7 @@ func MakePayment() gin.HandlerFunc {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to send request"})
 			return
 		}
-		fmt.Println(response)
+		//fmt.Println(response)
 		defer response.Body.Close()
 		//var result map[string]interface{}
 		var paymentResponse model.PaymentResponse
@@ -53,7 +62,7 @@ func MakePayment() gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, paymentResponse)
+		ctx.JSON(http.StatusOK, gin.H{"payment": payment})
 	}
 }
 

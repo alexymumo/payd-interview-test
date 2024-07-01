@@ -15,6 +15,7 @@ func PublishMessage(message []byte) error {
 		panic(err)
 	}
 	defer conn.Close()
+	fmt.Println("Successfully connected")
 
 	ch, err := conn.Channel()
 	if err != nil {
