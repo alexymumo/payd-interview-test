@@ -1,6 +1,6 @@
 # payd-interview-test
 
-Solution for backend developer intern position payd 
+Solution for backend developer position at payd 
 
 ``Prerequisite``
 - Golang
