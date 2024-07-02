@@ -3,13 +3,14 @@ package main
 import (
 	"payd/internal/routes"
 	"payd/pkg/db"
+	"payd/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
 	db.ConnectDb()
-	//utils.LoadEnvs()
+	utils.LoadEnvs()
 }
 
 func main() {
@@ -17,6 +18,5 @@ func main() {
 	router.Use(gin.Logger())
 	routes.UserRoutes(router)
 	routes.PaymentRoutes(router)
-	//router.Use()
 	router.Run("localhost:8080")
 }

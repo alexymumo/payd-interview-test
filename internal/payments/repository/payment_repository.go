@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"os"
 	"payd/internal/payments/model"
 	"payd/pkg/db"
 	"payd/pkg/utils"
@@ -46,7 +47,7 @@ func MakePayment() gin.HandlerFunc {
 		if err != nil {
 			panic(err)
 		}
-		req.SetBasicAuth("NqRu98iDE7VYnObu8mTK", "fhOf4vHqvLhrrRiFltGK5anrtzP1BmoDqjqMSsMf")
+		req.SetBasicAuth(os.Getenv("USERNAME"), os.Getenv("PASSWORD"))
 		req.Header.Set("Content-Type", "application/json")
 		response, err := client.Do(req)
 		if err != nil {

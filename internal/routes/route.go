@@ -2,6 +2,7 @@ package routes
 
 import (
 	"payd/internal/auth/repository"
+	"payd/internal/auth/service"
 	repo "payd/internal/payments/repository"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,11 @@ func UserRoutes(route *gin.Engine) {
 }
 
 func PaymentRoutes(route *gin.Engine) {
-	route.POST("v1/payments", repo.MakePayment())
-	route.GET("v1/payments/status/:id", repo.CheckPaymentStatus())
+	paymentRoutes := route.Group("/payments")
+	paymentRoutes.Use(service.AuthMiddleware())
+	{
+		paymentRoutes.POST("/initiate", repo.MakePayment())
+		paymentRoutes.GET("/status/:id", repo.CheckPaymentStatus())
+	}
+
 }

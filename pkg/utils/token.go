@@ -12,17 +12,13 @@ import (
 var SECRET_KEY = os.Getenv("")
 
 type UserCredential struct {
-	Username string `json:"username"`
-	Email    string `json:"password"`
-	UserId   int    `json:"userid"`
+	UserId uint32
 	jwt.StandardClaims
 }
 
-func CreateToken(name string, email string, id int) (token string, refreshToken string, err error) {
+func CreateToken(userId uint32) (token string, refreshToken string, err error) {
 	claims := &UserCredential{
-		Username: name,
-		Email:    email,
-		UserId:   id,
+		UserId: userId,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(24)).Unix(),
 		},
@@ -39,6 +35,20 @@ func CreateToken(name string, email string, id int) (token string, refreshToken 
 	}
 	jwtRefreshToken, err := jwt.NewWithClaims(jwt.SigningMethodES256, refreshClaims).SignedString([]byte(SECRET_KEY))
 	return jwtToken, jwtRefreshToken, err
+}
+
+func ParseToken(tokenString string) (*UserCredential, error) {
+	claims := &UserCredential{}
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (interface{}, error) {
+		return t, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !token.Valid {
+		return nil, err
+	}
+	return claims, nil
 }
 
 func VerifyToken(signedToken string) (claims *UserCredential, msg string) {
