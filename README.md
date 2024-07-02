@@ -52,8 +52,10 @@ Payload
     "email":"alex@gmail.com",
     "name":"Alex Test",
     "password":"1234"
+
 }
 ``
+![Screenshot from 2024-07-02 12-47-24](https://github.com/alexymumo/payd-interview-test/assets/56880898/3ed26f31-c66b-4975-a699-acb204ff603b)
 
 
 - Authenticate registered user
@@ -64,6 +66,8 @@ Payload
     "password":"1234"
 }
 ``
+
+![Screenshot from 2024-07-02 12-48-56](https://github.com/alexymumo/payd-interview-test/assets/56880898/4320501a-a2d5-481a-bcf3-b596def7bfdd)
 
 
 ``Payment``
