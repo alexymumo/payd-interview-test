@@ -6,7 +6,7 @@ Solution for backend developer intern position payd
 - Golang
 - PostgreSQL 
 - Postman - for testing endpoints
-- Payd API credentials 
+- Payd API credentials ie ``username`` ``password``
 
 ``Technologies used``
 - Golang
